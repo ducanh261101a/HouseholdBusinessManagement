@@ -12,8 +12,9 @@ async function main() {
     update: {},
     create: {
       username: 'admin',
-        password: '$argon2id$v=19$m=4096,t=3,p=1$3WZFJL/7CZ95K3uXHAOWdQ$82M2XZsI8Dqg1tY7EtwIt3AEZYxciDnRPUCq+9oigt8',
-        email: 'thaianh02012002@gmail.com'
+      password:
+        '$argon2id$v=19$m=4096,t=3,p=1$3WZFJL/7CZ95K3uXHAOWdQ$82M2XZsI8Dqg1tY7EtwIt3AEZYxciDnRPUCq+9oigt8',
+      email: 'thaianh02012002@gmail.com',
     },
   });
 

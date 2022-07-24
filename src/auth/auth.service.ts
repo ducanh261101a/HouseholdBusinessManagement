@@ -4,6 +4,7 @@ import { AuthDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
 import { ConfigService } from '@nestjs/config';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -27,16 +28,22 @@ export class AuthService {
     const pwMatches = await argon.verify(user.password, dto.password);
     //if password incorrect throw exception
     if (!pwMatches) throw new ForbiddenException('Credentials incorrect');
-    return this.signToken(user.userId, user.email);
+    return this.signToken(user.userId, user.username, user.email, user.role);
   }
 
   async signToken(
     userId: number,
     username: string,
-  ): Promise<{ access_token: string }> {
+    email: string,
+    role: Role,
+  ): Promise<{
+    user: { userId: number; username: string; email: string; role: Role };
+    access_token: string;
+  }> {
     const paload = {
       userId: userId,
       username,
+      role,
     };
 
     const secret = this.config.get('JWT_SECRET');
@@ -47,6 +54,12 @@ export class AuthService {
     });
 
     return {
+      user: {
+        userId,
+        username,
+        email,
+        role,
+      },
       access_token: token,
     };
   }

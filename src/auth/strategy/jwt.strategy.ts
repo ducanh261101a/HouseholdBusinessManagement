@@ -1,6 +1,6 @@
 import { PrismaService } from './../../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 
@@ -20,6 +20,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
         userId: payload.userId,
       },
     });
+
     delete user.password;
     return user;
   }
