@@ -1,3 +1,5 @@
+import { RolesGuard } from './guard/role.guard';
+import { JwtGuard } from './guard/auth.guard';
 import {
   Controller,
   Get,
@@ -7,6 +9,8 @@ import {
   Param,
   Delete,
   UseGuards,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -14,12 +18,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/decorator';
 import { User } from '@prisma/client';
+import { Roles } from 'src/auth/decorator/roles.decorator';
+import Role from './role/role.enum';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.CREATED)
+  @Roles(Role.Admin)
+  @UseGuards(JwtGuard, RolesGuard)
   @Post('createUser')
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
@@ -30,7 +38,9 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(Role.Admin)
   @Get(':id')
   findOne(@Param('id') id: string, @GetUser() user: User) {
     return this.usersService.findOne(+id, user);
