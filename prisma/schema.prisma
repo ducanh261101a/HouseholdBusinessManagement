@@ -72,7 +72,7 @@ model Product {
 }
 
 model ProductLine {
-  id          Int       @id
+  id          Int       @id @unique @default(autoincrement())
   product     Product[]
   name        String
   description String

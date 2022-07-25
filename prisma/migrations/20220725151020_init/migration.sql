@@ -1,9 +1,13 @@
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
+
 -- CreateTable
 CREATE TABLE "user" (
     "userId" SERIAL NOT NULL,
     "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "role" "Role" NOT NULL DEFAULT 'USER',
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("userId")
 );
@@ -52,7 +56,7 @@ CREATE TABLE "product" (
 
 -- CreateTable
 CREATE TABLE "productLine" (
-    "id" INTEGER NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
 
@@ -78,6 +82,9 @@ CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "orderDetail_productCode_key" ON "orderDetail"("productCode");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "productLine_id_key" ON "productLine"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "payment_orderId_key" ON "payment"("orderId");

@@ -25,8 +25,8 @@ export class UsersService {
 
   async findAll(pageSize: number, pageIndex: number) {
     if (pageIndex <= 0) throw new ForbiddenException('pageIndex không hợp lệ');
-    const totalUser = await this.prisma.user.findMany();
-    const totalRecord = totalUser.length;
+    const totalRecord = await this.prisma.user.count();
+
     let userList = await this.prisma.user.findMany({
       skip: pageSize * (pageIndex - 1),
       take: pageSize * 1,
