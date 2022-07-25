@@ -84,5 +84,8 @@
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
+  },
+  "node" : {
+    "version": "v18.5.0"
   }
 }
