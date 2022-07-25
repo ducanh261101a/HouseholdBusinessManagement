@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
 import { ConfigService } from '@nestjs/config';
 import { Role } from '@prisma/client';
+import {CreateDto} from "./dto/create.dto";
 
 @Injectable()
 export class AuthService {
@@ -13,6 +14,20 @@ export class AuthService {
     private jwt: JwtService,
     private config: ConfigService,
   ) {}
+
+  async signup(dto: CreateDto){
+    const hash = await argon.hash(dto.password);
+    const newUser = await  this.prisma.user.create({
+      data: {
+        username: dto.username,
+        password: hash,
+        email: dto.email,
+        role: Role.ADMIN
+      }
+    })
+    delete newUser.password;
+    return newUser;
+  }
   async signin(dto: AuthDto) {
     // find the user by email
 
