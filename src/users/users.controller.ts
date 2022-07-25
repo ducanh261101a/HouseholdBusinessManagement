@@ -1,3 +1,4 @@
+import { PagingDto } from './dto/paging.dto';
 import { RolesGuard } from './guard/role.guard';
 import { JwtGuard } from './guard/auth.guard';
 import {
@@ -11,6 +12,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,6 +22,7 @@ import { GetUser } from 'src/auth/decorator';
 import { User } from '@prisma/client';
 import { Roles } from 'src/auth/decorator/roles.decorator';
 import Role from './role/role.enum';
+import { query } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -33,9 +36,12 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Roles(Role.Admin)
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  findAll(@Query() query: PagingDto) {
+    return this.usersService.findAll(query.pageSize, query.pageIndex);
   }
 
   @HttpCode(HttpStatus.OK)
