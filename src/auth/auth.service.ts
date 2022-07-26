@@ -36,7 +36,7 @@ export class AuthService {
         username: dto.username,
       },
     });
-    console.log('user', user);
+
 
     //if user dose not exist throw exception
     if (!user)

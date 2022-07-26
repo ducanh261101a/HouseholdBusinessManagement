@@ -9,7 +9,7 @@ import * as argon from 'argon2';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
   async create(createUserDto: CreateUserDto) {
-    console.log('createDto', createUserDto);
+
     const hash = await argon.hash(createUserDto.password);
     const newUser = await this.prisma.user.create({
       data: {

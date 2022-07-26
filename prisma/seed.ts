@@ -17,8 +17,6 @@ async function main() {
       email: 'thaianh02012002@gmail.com',
     },
   });
-
-  console.log({ post1 });
 }
 
 // execute the main function

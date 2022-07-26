@@ -47,15 +47,16 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtGuard, RolesGuard)
   @Roles(Role.Admin)
-  @Get(':id')
+  @Get('getById/:id')
   findOne(@Param('id') id: string, @GetUser() user: User) {
     return this.usersService.findOne(+id, user);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
+
   @Get('me')
   getMe(@GetUser() user: User) {
-    console.log('user', user);
+
 
     return user;
   }
