@@ -7,15 +7,16 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL_2")
 }
 
 model User {
-  userId   Int    @id @default(autoincrement())
-  username String @unique
+  userId   Int     @id @default(autoincrement())
+  username String  @unique
   password String
-  email    String @unique
-  role     Role   @default(USER)
+  email    String  @unique
+  role     Role    @default(USER)
+  order    Order[]
 
   @@map("user")
 }
@@ -41,6 +42,8 @@ model Order {
   customerId Int
   customer   Customer @relation(fields: [customerId], references: [customerId])
 
+  createdBy   Int
+  user        User          @relation(fields: [createdBy], references: [userId])
   orderDetail OrderDetail[]
   payment     Payment?
 

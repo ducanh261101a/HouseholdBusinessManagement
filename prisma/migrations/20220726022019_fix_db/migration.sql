@@ -30,6 +30,7 @@ CREATE TABLE "order" (
     "status" INTEGER NOT NULL,
     "Note" TEXT NOT NULL,
     "customerId" INTEGER NOT NULL,
+    "createdBy" INTEGER NOT NULL,
 
     CONSTRAINT "order_pkey" PRIMARY KEY ("orderId")
 );
@@ -91,6 +92,9 @@ CREATE UNIQUE INDEX "payment_orderId_key" ON "payment"("orderId");
 
 -- AddForeignKey
 ALTER TABLE "order" ADD CONSTRAINT "order_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "customer"("customerId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "order" ADD CONSTRAINT "order_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "user"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "orderDetail" ADD CONSTRAINT "orderDetail_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "order"("orderId") ON DELETE RESTRICT ON UPDATE CASCADE;
