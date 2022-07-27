@@ -53,11 +53,8 @@ export class UsersController {
   }
 
   @UseGuards(JwtGuard)
-
   @Get('me')
   getMe(@GetUser() user: User) {
-
-
     return user;
   }
 
