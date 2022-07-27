@@ -16,7 +16,10 @@ export class ProductLineService {
 
   async findAll(pageSize: number, pageIndex: number) {
     const totalRecord = await this.prisma.productLine.count();
-    const productLineList = await this.prisma.productLine.findMany();
+    const productLineList = await this.prisma.productLine.findMany({
+      skip: pageSize * (pageIndex - 1),
+      take: pageSize,
+    });
     const response = {
       data: productLineList,
       paging: {
