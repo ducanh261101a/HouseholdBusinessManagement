@@ -24,11 +24,12 @@ CREATE TABLE "customer" (
 
 -- CreateTable
 CREATE TABLE "order" (
-    "orderId" SERIAL NOT NULL,
+    "orderId" TEXT NOT NULL,
     "rentDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "returnDate" TIMESTAMP(3) NOT NULL,
+    "returnDate" TIMESTAMP(3),
     "status" INTEGER NOT NULL,
-    "Note" TEXT NOT NULL,
+    "note" TEXT NOT NULL,
+    "addressOrder" TEXT NOT NULL,
     "customerId" INTEGER NOT NULL,
     "createdBy" INTEGER NOT NULL,
 
@@ -37,12 +38,13 @@ CREATE TABLE "order" (
 
 -- CreateTable
 CREATE TABLE "orderDetail" (
-    "orderId" INTEGER NOT NULL,
+    "orderDetailId" SERIAL NOT NULL,
+    "orderId" TEXT NOT NULL,
     "productCode" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
-    "priceEach" TEXT NOT NULL,
+    "priceEach" TEXT,
 
-    CONSTRAINT "orderDetail_pkey" PRIMARY KEY ("orderId")
+    CONSTRAINT "orderDetail_pkey" PRIMARY KEY ("orderDetailId")
 );
 
 -- CreateTable
@@ -68,12 +70,15 @@ CREATE TABLE "productLine" (
 CREATE TABLE "payment" (
     "id" SERIAL NOT NULL,
     "total" TEXT NOT NULL,
-    "orderId" INTEGER NOT NULL,
+    "orderId" TEXT NOT NULL,
     "debt" TEXT NOT NULL,
     "paid" TEXT NOT NULL,
 
     CONSTRAINT "payment_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_userId_key" ON "user"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "user_username_key" ON "user"("username");
@@ -82,10 +87,25 @@ CREATE UNIQUE INDEX "user_username_key" ON "user"("username");
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "orderDetail_productCode_key" ON "orderDetail"("productCode");
+CREATE UNIQUE INDEX "customer_customerId_key" ON "customer"("customerId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "customer_phone_key" ON "customer"("phone");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "order_orderId_key" ON "order"("orderId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "orderDetail_orderDetailId_key" ON "orderDetail"("orderDetailId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "product_productId_key" ON "product"("productId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "productLine_id_key" ON "productLine"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "payment_id_key" ON "payment"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "payment_orderId_key" ON "payment"("orderId");
